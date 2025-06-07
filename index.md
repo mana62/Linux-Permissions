@@ -1,3 +1,8 @@
+---
+layout: default
+title: MySQL チートシート
+---
+
 # 💻MYSQL
 
 ```sql
