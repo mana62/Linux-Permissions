@@ -1,303 +1,113 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>mysql</title>
-<meta name="keywords" content="ページのキーワードA,B,C">
-<meta name="description" content="ページの説明">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux ユーザーとグループと権限</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .highlight {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div id="outer">
-<header><div id="header-container"><div id="head-inner"><h1>あなたのＨＰタイトル</h1>
-<p class="description">あなたのＨＰの説明文</p></div></div>
-</header>
-<div id="content-wrapper">
-<main>
-<div id="inner">
-<h2>記事ページ見出し・大</h2>
-<p>文章あれこれ</p>
-<h3>記事ページ見出し・中</h3>
-<p>文章あれこれ</p>
-<h4>記事ページ見出し・小</h4>
-<p>文章あれこれ</p>
-</div>
-</main>
-<aside>
-<div id="middle-inner">
-<div class="side-title">menu</div>
-<div class="side">
-<ul>
-<li>記事ページへのリンク</li>
-<li>記事ページへのリンク</li>
-</ul>
-</div>
-</div>
-</aside>
-</div>
-<footer>© 2010 あなたのホームページ</footer>
-</div></body>
+    <h1>Linux ユーザーとグループと権限</h1>
+
+    <h2>✅ ユーザーとグループの関係</h2>
+    <table>
+        <tr>
+            <th>Linuxの種類</th>
+            <th>説明</th>
+        </tr>
+        <tr>
+            <td class="highlight">root</td>
+            <td>管理者（最強の権限）</td>
+        </tr>
+        <tr>
+            <td>一般ユーザー</td>
+            <td>通常のユーザー</td>
+        </tr>
+        <tr>
+            <td>グループ</td>
+            <td>複数のユーザーをまとめたもの</td>
+        </tr>
+    </table>
+    <p>✅ グループを使うと「特定のメンバーだけ編集OK」みたいにできる！</p>
+    <p><strong>👉 <code>id</code> コマンドで、自分が所属するグループを確認！</strong></p>
+
+    <pre><code>
+    id
+    </code></pre>
+
+    <h2>✅ 権限について</h2>
+    <ul>
+        <li>✅ -（ファイル）</li>
+        <li>✅ d（ディレクトリ）</li>
+        <li>✅ R（読み取り） = 4</li>
+        <li>✅ W（書き込み） = 2</li>
+        <li>✅ X（実行） = 1</li>
+    </ul>
+
+    <p>数字を足し算することで、権限を表現する！</p>
+    <table>
+        <tr>
+            <th>権限</th>
+            <th>読み取り (4)</th>
+            <th>書き込み (2)</th>
+            <th>実行 (1)</th>
+            <th>数字の合計</th>
+        </tr>
+        <tr>
+            <td>r--</td>
+            <td>✅ 4</td>
+            <td>❌ 0</td>
+            <td>❌ 0</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>rw-</td>
+            <td>✅ 4</td>
+            <td>✅ 2</td>
+            <td>❌ 0</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>rwx</td>
+            <td>✅ 4</td>
+            <td>✅ 2</td>
+            <td>✅ 1</td>
+            <td>7</td>
+        </tr>
+        <tr>
+            <td>--x</td>
+            <td>❌ 0</td>
+            <td>❌ 0</td>
+            <td>✅ 1</td>
+            <td>1</td>
+        </tr>
+    </table>
+
+    <pre><code>
+    ls -l
+    -rwxr-xr--
+    </code></pre>
+
+    <p>✅ chmod 755 ファイル名 なら rwxr-xr-x になる</p>
+    <p>✅ chmod +x script.sh → +x = 実行権限のみ渡せる。script.sh = 対象のファイル名。</p>
+    <p>✅ chmod +r file.txt → 読み取り権限を追加。</p>
+    <p>✅ chmod -w file.txt → 書き込み権限を削除。</p>
+</body>
 </html>
 
-```sql
--- mysqlのコンテナに入る
-**docker exec -it mysql bash**
-```
-
-```sql
--- mysql へユーザー名でアクセス
-**mysql -u ユーザ名 -p**
-
--- ルートでアクセスする場合
-**mysql root ユーザ名 -p**
-
--- 👆両方ともパスワードを入力
-```
-
-**🟠データベースの作成**
-
-```sql
-**CREATE DATABASE データベース名;**
-```
-
-**🟠データベースの一覧の確認**
-
-```sql
-**SHOW databases;**
-```
-
-**🟠使用するデータベースの選択**
-
-```sql
-**USE データベース名;**
-```
-
-**🟠使用しているデータベースの確認**
-
-```sql
-**SELECT database();**
-```
-
-**🟢テーブルの作成**
-
-```sql
-**CREATE TABLE テーブル名（カラム名 データ型 制約）;**
-```
-
-**🟢複数カラムを指定する時**
-
-```sql
-**CREATE TABLE テーブル名 (
-
-カラム名1 データ型 制約,
-
-カラム名2 データ型 制約,
-
-カラム名3 データ型 制約
-);**
-```
-
-**🟢一つのデータを挿入**
-
-```sql
-**INSERT INTO users (カラム) VALUES ('データ');**
-```
-
-**🟢複数のデータの挿入**
-
-```sql
-**INSERT INTO テーブル名 (カラム名) VALUES (データ１), (データ２), (データ３)**
-```
-
-**🟢テーブルの一覧を表示する**
-
-```sql
-**SHOW tables;**
-```
-
-**🟢データの作成**
-
-```sql
-**INSERT INTO テーブル名 (カラム名) VALUES (値);**
-```
-
-**🟢データの一覧**
-
-```sql
-**SELECT カラム名 FROM テーブル名;**
-```
-
-**🟢新しいカラム（列）を追加**
-
-```sql
-**ALTER TABLE users ADD COLUMN age INT;**
-```
-
-**🟢カラムを削除**
-
-```sql
-**ALTER TABLE users DROP COLUMN age;**
-```
-
-**🟢テーブルの詳細を確認する方法**
-
-```sql
-**SHOW COLUMNS FROM テーブル名;**
-```
-
-**🟢データの更新**
-
-```sql
-**UPDATE テーブル名 SET カラム名=値;**
-
-または
-
-**UPDATE テーブル名 SET カラム名=変更後の値 WHERE カラム名=変更する値;**
-```
-
-**🟢データの削除**
-
-```sql
-**DELETE FROM テーブル名;
-
-または
-
-DELETE FROM テーブル名 WHERE カラム名=値;**
-```
-
-**🟢テーブルの詳細を確認する方法**
-
-```sql
-**SHOW COLUMNS FROM テーブル名;**
-```
-
-**🟢テーブルごと削除**
-
-```sql
-**DROP TABLE users;**
-```
-
-**🟢データベースの削除**
-
-```sql
-**DROP DATABASE データベース名;**
-```
-
-**🟡ユニークなデータを取得（重複排除）**
-
-```sql
-**SELECT DISTINCT name FROM users;**
-```
-
-**🟡並び替え**
-
-```sql
-**SELECT * FROM users ORDER BY age DESC;**
-```
-
-- `ASC` → 昇順（小さい順）
-- `DESC` → 降順（大きい順）
-
-**🟡条件に一致するデータを検索**
-
-```sql
-**SELECT * FROM users WHERE age >= 20 AND age <= 30;**
-```
-
-**🟡グループ化と集計**
-
-```sql
--- 年齢ごとの人数を数える
-**SELECT age, COUNT(*) AS 人数 FROM users GROUP BY age;**
-
--- 特定の条件に絞る（HAVING句）
-**SELECT age, COUNT(*) FROM users GROUP BY age HAVING COUNT(*) >= 2;**
-```
-
-## 🔐 **権限を付けるSQLコマンド**
-
-### ✅ **① ユーザーの作成**
-
-```sql
-**CREATE USER 'ユーザー名'@'ホスト名' IDENTIFIED BY 'パスワード';**
-```
-
-👉 例：
-
-```sql
-**CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'password123';**
-```
-
-- **'localhost'** → 同じサーバーからのみアクセス可能
-- **'%'** → どこからでもアクセス可能
-
-### ✅ **② 権限を付与（GRANT文）**
-
-```sql
-**GRANT 権限一覧 ON データベース名.テーブル名 TO 'ユーザー名'@'ホスト名';**
-```
-
-👉例：`testuser`にすべての権限を付与
-
-```sql
-**GRANT ALL PRIVILEGES ON mydb.* TO 'testuser'@'localhost';**
-```
-
-### よく使う権限一覧：
-
-| 権限 | 説明 |
-| --- | --- |
-| `ALL PRIVILEGES` | すべての権限 |
-| `SELECT` | データの読み取り |
-| `INSERT` | データの挿入 |
-| `UPDATE` | データの更新 |
-| `DELETE` | データの削除 |
-| `CREATE` | 新しいテーブルやデータベースの作成 |
-| `DROP` | テーブルやデータベースの削除 |
-
----
-
-### ✅ **③ 権限を確認する**
-
-```sql
-**SHOW GRANTS FOR 'ユーザー名'@'ホスト名';**
-```
-
-👉 例：
-
-```sql
-**SHOW GRANTS FOR 'testuser'@'localhost';**
-```
-
-### ✅ **④ 権限を取り消す（REVOKE文）**
-
-```sql
-**REVOKE 権限一覧 ON データベース名.テーブル名 FROM 'ユーザー名'@'ホスト名';**
-```
-
-👉 例：
-
-```sql
-**REVOKE ALL PRIVILEGES ON mydb.* FROM 'testuser'@'localhost';**
-```
-
-### ✅ **⑤ ユーザーを削除**
-
-```sql
-**DROP USER 'ユーザー名'@'ホスト名';**
-```
-
-👉 例：
-
-```sql
-**DROP USER 'testuser'@'localhost';**
-```
-
-### ✅ **⑥ 権限の変更を反映**
-
-```sql
-**FLUSH PRIVILEGES;**
-```
-
-👉 **権限を設定・変更したら必ず実行**
